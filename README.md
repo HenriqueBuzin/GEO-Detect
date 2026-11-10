@@ -9,6 +9,21 @@ espaçotemporais seleciona células que concentram mais alertas futuros do que a
 > Os alertas DETER indicam alterações na cobertura vegetal detectadas por satélite. Eles **não** comprovam
 > crime nem a legalidade ou ilegalidade de uma atividade. Este projeto não faz inferências sobre pessoas ou organizações.
 
+## Conclusão científica (teste independente pré-registrado)
+
+Avaliação executada **uma única vez**, com o protocolo congelado antes da leitura dos alvos ([`protocolo/`](protocolo/), commit `41c29b4`).
+O teste usou 3 origens trimestrais de 2026 (528 alertas de mineração do DETER no Pará), com orçamento primário de 2% da área elegível.
+Detalhes em [`results/avaliacao_final/RELATORIO_AVALIACAO_FINAL.md`](results/avaliacao_final/RELATORIO_AVALIACAO_FINAL.md).
+
+1. **A resolução espacial teve ganho em relação à grade original de 5 km.**
+   - As configurações com células de cerca de 6 km² capturaram 22,5% e 22,7% dos alertas futuros (H3 r7 e quadrado de 2,5 km, ambos com vizinhança). O quadrado de 5 km, contando só a própria célula, capturou 15,5%.
+   - A diferença é de +0,07, com IC 95% de cerca de [+0,036; +0,11], positiva em 3 de 3 origens.
+   - A comparação pré-especificada foi "6 km² com vizinhança" contra "5 km sem vizinhança". Atribuir o ganho à resolução é uma interpretação, apoiada no fato de que, com 2%, a vizinhança não alterou o resultado em nenhuma das duas grades finas.
+2. **Não foi demonstrada superioridade do formato hexagonal.** Contra o quadrado de área parecida, a diferença do H3 r7 foi de −0,002, com IC 95% [−0,043; +0,035] (inconclusivo). A vantagem aparente dos hexágonos no desenvolvimento era efeito de resolução.
+3. **A vizinhança imediata não teve ganho confirmatório no orçamento primário de 2%:** −0,007 no H3 e −0,005 no quadrado, ambos inconclusivos. O ganho observado com 5% é apenas descritivo.
+
+Com só 3 origens independentes, os intervalos são largos e diferenças moderadas não podem ser excluídas.
+
 ---
 
 ## Reprodução
@@ -177,7 +192,9 @@ Esses dois métodos são a régua para C (ST-DBSCAN) e D (GEO-Detect).
 
 ---
 
-## Experimento: grades hexagonais H3 (branch `feature/hexagonal-h3`, preliminar)
+## Experimento exploratório: grades hexagonais H3 (desenvolvimento)
+
+> Resultados **exploratórios**, que motivaram o protocolo. A avaliação final, na seção seguinte, prevalece sobre eles.
 
 Relatório completo em [`results/hexagonal/RELATORIO.md`](results/hexagonal/RELATORIO.md).
 Comparação feita **só no desenvolvimento**, com o mesmo orçamento em km². Quadrados de 2,5 km e 1 km
@@ -193,10 +210,10 @@ Recall de alertas futuros com 2% da área (média de 6 origens):
 | quadrado 1 km | 0,168 | 0,283 |
 | H3 r8 (0,8 km²) | 0,118 | 0,298 |
 
-- **Resolução e vizinhança explicam a maior parte do ganho.** Isso vale nas duas formas de célula.
-- **O hexágono supera o quadrado de área parecida só em cerca de 6 km²:** +0,04 a +0,07, em 5 ou 6 das 6 origens. Em cerca de 1 km² não há diferença. Com 6 origens, nada disso é estatisticamente estabelecido.
-- **Novas detecções aparecem ao lado de células ativas** com frequência 3 a 19 vezes a esperada. Ainda assim, de 77% a 92% delas não tinham vizinho ativo no trimestre anterior.
-- **Recomendação:** usar células de cerca de 6 km² com vizinhança. Congelar H3 r7 e o quadrado de 2,5 km como comparação principal antes de abrir o teste. Tratar a forma da célula como pergunta secundária.
+- **No desenvolvimento, resolução e vizinhança pareciam explicar a maior parte do ganho**, nas duas formas de célula. No teste, a parte da vizinhança não se confirmou com 2%.
+- **O hexágono parecia superar o quadrado de área parecida em cerca de 6 km²** (+0,04 a +0,07 na média por origem), mas não em cerca de 1 km². Isso não se confirmou no teste.
+- **Novas detecções aparecem ao lado de células ativas** com frequência 3 a 19 vezes a esperada. É uma estatística descritiva. Ainda assim, de 77% a 92% delas não tinham vizinho ativo no trimestre anterior.
+- Com base nisso, o protocolo congelou o H3 r7 com vizinhança como configuração principal e o quadrado de 2,5 km com vizinhança como controle.
 
 ---
 
@@ -214,8 +231,8 @@ Recall@2% (alertas futuros capturados) nas 3 origens independentes, 2026-01 a 20
 | quadrado 5 km, frequência histórica (referência original) | 0,155 |
 
 - **P1, hexágono contra quadrado de área parecida:** −0,002, IC 95% [−0,043; +0,035]. **Inconclusivo:** a forma não fez diferença.
-- **Resolução de cerca de 6 km² contra 5 km:** +0,07, IC [+0,036; +0,11], em 3 de 3 origens. É o **ganho confirmado** (+45% relativos), igual nas duas formas.
-- **Vizinhança imediata:** nula com 2% e grande com 5% (+0,08 a +0,10). Este último resultado é descritivo.
+- **Células de cerca de 6 km² com vizinhança contra o quadrado de 5 km sem vizinhança (S3 e S4):** +0,070 e +0,072, IC exclui zero, em 3 de 3 origens (+45% relativos), igual nas duas formas. São comparações secundárias pré-especificadas, interpretadas como ganho de resolução.
+- **Vizinhança imediata (S1 e S2):** sem ganho com 2% (−0,007 e −0,005, inconclusivo). Com 5%, o ganho foi de +0,08 a +0,10, mas apenas descritivo, não confirmatório.
 
 ---
 
@@ -241,9 +258,9 @@ data/processed/                variáveis e atribuições (não versionadas, reg
 
 ## Próximos passos
 
-1. Decidir se a branch `feature/hexagonal-h3` entra na `main`, e com qual grade de cerca de 6 km² (H3 r7 ou quadrado de 2,5 km, equivalentes no teste).
+1. Escolher a grade de cerca de 6 km² para os próximos trabalhos (H3 r7 ou quadrado de 2,5 km, equivalentes no teste).
 2. Grafo espaçotemporal e ST-DBSCAN, desenvolvidos só nas origens até 2026-07. O teste independente de 2026 **já foi usado**: um modelo novo precisa de alvos a partir de out/2026, ou deve ser apresentado como exploratório.
-3. Resumo e pôster para a GEOMRIT 2027 com o ganho confirmado de resolução e o resultado nulo da forma.
+3. Resumo e pôster para a GEOMRIT 2027 com o ganho de resolução em relação à grade de 5 km e a ausência de vantagem demonstrada do formato hexagonal.
 
 ## Licença
 
