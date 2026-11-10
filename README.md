@@ -24,15 +24,25 @@ Detalhes em [`results/avaliacao_final/RELATORIO_AVALIACAO_FINAL.md`](results/ava
 
 Com só 3 origens independentes, os intervalos são largos e diferenças moderadas não podem ser excluídas.
 
-> **Decisão da grade (10/11/2026, posterior ao teste e operacional):** a representação principal passa a ser o
-> **quadrado de 2,5 km + vizinhança**. O **H3 r7 + vizinhança** fica como controle geométrico, e o quadrado de 5 km
-> (contagem) como referência original.
-> - Nenhuma forma mostrou vantagem de 2 pontos em Recall@2%, e a equivalência também não foi demonstrada.
-> - Com desempenho indistinguível, o quadrado foi escolhido pela simplicidade e reprodutibilidade: área e orçamento exatos, encaixe na grade de 5 km, sem função experimental, posicionamento auditável.
-> - Isso **não** é uma afirmação de superioridade e não altera o protocolo nem o veredito de P1.
->
-> Análise completa, com estabilidade ao deslocamento da grade, bordas, custo e separação entre resolução, forma e
-> vizinhança (exploratória, só desenvolvimento): [`results/decisao_grade/RELATORIO_DECISAO_GRADE.md`](results/decisao_grade/RELATORIO_DECISAO_GRADE.md).
+---
+
+## Decisão metodológica sobre a grade espacial
+
+Relatório completo: [`results/decisao_grade/RELATORIO_DECISAO_GRADE.md`](results/decisao_grade/RELATORIO_DECISAO_GRADE.md).
+
+- **Representação operacional principal:** quadrado de 2,5 × 2,5 km, com vizinhança.
+- **Controle científico obrigatório:** H3 r7, com vizinhança. Ele permanece em todas as comparações e no pôster.
+- **Teste independente (Recall@2%, 3 origens de 2026, 528 alertas):** 0,227 no quadrado e 0,225 no H3. A diferença H3 − quadrado é de −0,002, com IC 95% [−0,043; +0,035].
+- **A diferença não demonstra superioridade nem equivalência estatística.** O intervalo contém tanto +2 quanto −2 pontos percentuais. A escolha do quadrado se baseia em simplicidade e reprodutibilidade, e não no recall:
+  - área e orçamento exatos;
+  - encaixe na grade de 5 km;
+  - nenhuma função experimental;
+  - posicionamento auditável.
+- **Resolução:** o ganho de cerca de 7 pontos percentuais em relação à grade original de 5 km (0,155 → 0,225–0,227) está associado à mudança de resolução nas configurações avaliadas. É o mesmo nas duas formas.
+- **Sensibilidade (exploratória, só desenvolvimento):** a posição da grade pode influenciar o desempenho mais do que o formato das células.
+  - Só deslocar a origem do mesmo quadrado mudou o Recall@2% em até 3,4 pontos.
+  - Hexágonos e quadrados de mesma área diferiram, em média, de 0,1 a 0,35 ponto.
+- **Momento da decisão:** essa decisão operacional foi tomada **depois** da avaliação final e **não altera** o protocolo pré-registrado ([`protocolo/`](protocolo/), commit `41c29b4`), que usou o H3 r7 como configuração principal. Também não muda o veredito de P1 (inconclusivo) nem os resultados históricos.
 
 ---
 
@@ -248,7 +258,7 @@ Recall@2% (alertas futuros capturados) nas 3 origens independentes, 2026-01 a 20
 | quadrado 2,5 km + vizinhança (controle) | 0,227 |
 | quadrado 5 km, frequência histórica (referência original) | 0,155 |
 
-Os papéis "principal" e "controle" são os do protocolo para P1. Depois do teste, a representação operacional passou a ser o quadrado de 2,5 km (ver a nota na conclusão científica).
+Os papéis "principal" e "controle" são os do protocolo para P1. Depois do teste, a representação operacional passou a ser o quadrado de 2,5 km (ver [Decisão metodológica sobre a grade espacial](#decisão-metodológica-sobre-a-grade-espacial)).
 
 - **P1, hexágono contra quadrado de área parecida:** −0,002, IC 95% [−0,043; +0,035]. **Inconclusivo:** a forma não fez diferença.
 - **Células de cerca de 6 km² com vizinhança contra o quadrado de 5 km sem vizinhança (S3 e S4):** +0,070 e +0,072, IC exclui zero, em 3 de 3 origens (+45% relativos), igual nas duas formas. São comparações secundárias pré-especificadas, interpretadas como ganho de resolução.
