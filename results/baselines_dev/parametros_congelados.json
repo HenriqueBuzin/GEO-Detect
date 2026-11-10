@@ -1,0 +1,35 @@
+{
+  "A": {
+    "metodo": "A_24m",
+    "criterio": "maior recall médio entre origens de desenvolvimento, orçamento 2%",
+    "recall_medio_dev": 0.1935
+  },
+  "B": {
+    "metodo": "B_12m",
+    "criterio": "maior recall médio entre origens de desenvolvimento, orçamento 2%",
+    "recall_medio_dev": 0.1963
+  },
+  "protocolo": {
+    "gap_meses": 1,
+    "horizonte_meses": 3,
+    "raio_universo_km": 10,
+    "orcamentos": [
+      "1%",
+      "2%",
+      "5%",
+      "k=25",
+      "k=50",
+      "k=100",
+      "k=200"
+    ],
+    "desempate": "expectativa sob desempate aleatório",
+    "origens_dev": [
+      "2024-01-01",
+      "2024-04-01",
+      "2024-07-01",
+      "2024-10-01",
+      "2025-01-01",
+      "2025-04-01"
+    ]
+  }
+}

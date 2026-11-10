@@ -8,6 +8,7 @@ venv/
 # Dados brutos (reproduzíveis com scripts/01_download_deter.py; conferir SHA-256 em download_metadata.json)
 data/raw/*
 !data/raw/download_metadata.json
+data/processed/
 
 # Sistema
 .DS_Store

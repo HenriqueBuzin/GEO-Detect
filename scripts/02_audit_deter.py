@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 import geopandas as gpd
@@ -34,21 +35,12 @@ import numpy as np
 import pandas as pd
 import shapely
 
-CRS_METRICO = "ESRI:102033"  # South America Albers Equal Area Conic (área e distância em metros)
-CELULA_M = 5_000
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from geodetect.dados import CELULA_M, CRS_METRICO, DEV, SLIVER_KM2, carregar, periodo, preparar  # noqa: E402
+
 INICIO, FIM = "2024-01-01", "2025-12-31"
-DEV = ("2024-01-01", "2025-06-30")
-TESTE = ("2025-07-01", "2025-12-31")
-SLIVER_KM2 = 0.001  # 0,1 ha: fragmento de recorte municipal, não um alerta
+TESTE = ("2025-07-01", "2025-12-31")  # semestre de teste do plano original (auditoria de volume)
 ORCAMENTOS = (0.05, 0.10, 0.20)
-
-
-def carregar(path: Path) -> gpd.GeoDataFrame:
-    g = gpd.read_file(path)
-    g["view_date"] = pd.to_datetime(g["view_date"])
-    g["publish_month"] = pd.to_datetime(g["publish_month"])
-    g["chave"] = np.arange(len(g))  # gid não é único (ver relatório)
-    return g
 
 
 def tabela_campos(g: gpd.GeoDataFrame) -> pd.DataFrame:
@@ -99,38 +91,6 @@ def qualidade(g: gpd.GeoDataFrame, gm: gpd.GeoDataFrame) -> dict:
         "gid_sufixo_hist_por_ano": g.assign(h=g["gid"].str.endswith("_hist"))
         .groupby(g["view_date"].dt.year)["h"].mean().round(3).to_dict(),
     }
-
-
-def corrigir(geom):
-    """Torna a geometria válida, mantendo apenas as partes poligonais."""
-    if geom is None or geom.is_valid:
-        return geom
-    try:
-        fixed = shapely.make_valid(geom, method="structure", keep_collapsed=False)
-    except shapely.errors.GEOSException:
-        fixed = geom.buffer(0)
-    polys = [p for p in getattr(fixed, "geoms", [fixed]) if p.geom_type in ("Polygon", "MultiPolygon")]
-    return shapely.unary_union(polys) if polys else fixed
-
-
-def preparar(g: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
-    """Corrige geometrias, remove fragmentos e projeta para CRS métrico."""
-    g = g.copy()
-    g["geometry"] = [corrigir(x) for x in g.geometry.to_numpy()]
-    g = g.to_crs(CRS_METRICO)
-    g["area_km2"] = g.area / 1e6
-    g = g[g["area_km2"] >= SLIVER_KM2].copy()
-    c = g.geometry.centroid  # representação pontual inicial (limitação documentada)
-    g["cx"], g["cy"] = c.x, c.y
-    g["cel_i"] = np.floor(g["cx"] / CELULA_M).astype(int)
-    g["cel_j"] = np.floor(g["cy"] / CELULA_M).astype(int)
-    g["celula"] = g["cel_i"].astype(str) + "_" + g["cel_j"].astype(str)
-    g["mes"] = g["view_date"].dt.to_period("M")
-    return g
-
-
-def periodo(g: pd.DataFrame, ini: str, fim: str) -> pd.DataFrame:
-    return g[(g["view_date"] >= ini) & (g["view_date"] <= fim)]
 
 
 def distancia_vizinho_mais_proximo(g: pd.DataFrame) -> np.ndarray:

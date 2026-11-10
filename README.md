@@ -18,6 +18,7 @@ python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 python scripts/01_download_deter.py   # baixa os alertas do WFS do TerraBrasilis + limite do PA (IBGE)
 python scripts/02_audit_deter.py      # gera results/audit/
+python scripts/03_baselines_dev.py    # grade, universo, variáveis e métodos A/B (só desenvolvimento)
 ```
 
 Os dados brutos não são versionados. `data/raw/download_metadata.json` registra o filtro, a data de
@@ -123,21 +124,74 @@ poderia ajudar.
 
 ---
 
+## Métodos de referência A e B — período de desenvolvimento
+
+Script: [`scripts/03_baselines_dev.py`](scripts/03_baselines_dev.py). Resultados em [`results/baselines_dev/`](results/baselines_dev/).
+O script descarta tudo depois de 30/06/2025 logo ao carregar, então **o teste não foi lido**.
+
+**Protocolo.** Há 6 origens trimestrais, de 2024-01 a 2025-04. Em cada origem *t*:
+- **Informação:** só alertas com `view_date` < *t* − 1 mês.
+- **Universo:** células a até 10 km de algum alerta disponível, entre 5.850 e 6.072 células.
+- **Alvo:** células com alerta em [*t*, *t* + 3 meses).
+- **Métodos:** A_L é a quantidade de alertas e B_L a área de alertas da célula nos últimos L meses, com L ∈ {3, 12, 24, 60, tudo}.
+- **Empates:** resolvidos pela expectativa sob desempate aleatório, para o resultado não depender da ordem das linhas.
+
+| Origem | Alertas-alvo | Células-alvo no universo | …com algum alerta anterior |
+|---|---|---|---|
+| 2024-01 | 37 | 32 | 23 |
+| 2024-04 | 276 | 218 | 190 |
+| 2024-07 | 135 | 100 | 80 |
+| 2024-10 | 19 | 17 | 16 |
+| 2025-01 | 36 | 29 | 21 |
+| 2025-04 | 126 | 105 | 92 |
+
+**Recall médio entre as 6 origens** (fração das células com novo alerta que estavam entre as selecionadas):
+
+| Método | 1% (≈60 células) | 2% (≈120) | 5% (≈300) | k=25 | k=50 | k=100 | k=200 |
+|---|---|---|---|---|---|---|---|
+| **A_24m** (contagem, 24 meses) | 0,119 | **0,193** | 0,359 | 0,077 | 0,105 | 0,171 | 0,274 |
+| **B_12m** (área, 12 meses) | 0,102 | **0,196** | 0,387 | 0,062 | 0,096 | 0,164 | 0,284 |
+| A_tudo (contagem, histórico inteiro) | 0,100 | 0,164 | 0,330 | 0,065 | 0,091 | 0,145 | 0,232 |
+| Aleatório no universo | 0,010 | 0,020 | 0,050 | 0,004 | 0,008 | 0,017 | 0,033 |
+| Oráculo (limite superior) | 0,742 | 0,924 | 1,000 | 0,541 | 0,701 | 0,902 | 0,986 |
+
+![Recall por k](results/baselines_dev/fig_recall_por_k.png)
+
+![Recall por origem](results/baselines_dev/fig_recall_por_origem.png)
+
+**O que isso mostra.**
+- **Os métodos simples funcionam, mas deixam muito espaço.** Com 2% do universo, eles acertam cerca de 19% das células com novo alerta: quase 10 vezes o aleatório, mas muito abaixo do oráculo (92%). É esse espaço que o GEO-Detect precisa ocupar.
+- **A e B são praticamente equivalentes.** No orçamento de 2%, a diferença é 0,194 contra 0,196, bem menor que o desvio entre origens (0,04–0,06). Como os alertas de mineração têm áreas parecidas (mediana de cerca de 8 ha), contar alertas e somar área dá quase a mesma ordenação.
+- **Ter histórico não basta.** 84% das células-alvo (422 de 501) já tiveram alerta, mas existem cerca de 1.400 células com histórico para cerca de 80 alvos por trimestre. A dificuldade é **ordenar** as células com histórico.
+- **Células novas ficam de fora.** 16% dos alvos (79 de 501) estão em células sem nenhum alerta anterior. Para elas, A e B não são melhores que o aleatório. A vizinhança espacial, que o grafo captura, é a hipótese natural para esse grupo.
+- **Por que B_12m estabiliza em torno de 0,44.** Só cerca de 330 células têm área maior que zero nos últimos 12 meses. Depois disso, o restante da seleção é empate.
+- **Janela curta piora.** A_3m e B_3m ficam em cerca de 0,11 no orçamento de 2%, com variância alta: a atividade recente sozinha é um sinal fraco.
+
+**Parâmetros congelados para o teste** ([`parametros_congelados.json`](results/baselines_dev/parametros_congelados.json)):
+A = **A_24m** e B = **B_12m**, escolhidos pelo maior recall médio no orçamento de 2%, usando só o desenvolvimento.
+Esses dois métodos são a régua para C (ST-DBSCAN) e D (GEO-Detect).
+
+---
+
 ## Estrutura
 
 ```
+geodetect/dados.py             carga, correção de geometrias, projeção e célula de 5 km (compartilhado)
 scripts/01_download_deter.py   download reproduzível (WFS + IBGE) com metadados e SHA-256
 scripts/02_audit_deter.py      auditoria: campos, qualidade, séries, geografia, universo, vizinhança
-results/audit/                 tabelas, figuras e relatório JSON
+scripts/03_baselines_dev.py    grade, universo por origem, variáveis e métodos A/B no desenvolvimento
+results/audit/                 tabelas, figuras e relatório JSON da auditoria
+results/baselines_dev/         métricas por origem, resumo, parâmetros congelados e figuras
 data/raw/                      dados brutos (não versionados, exceto os metadados)
+data/processed/                variáveis por origem (não versionadas, regeneradas pelo script 03)
 ```
 
 ## Próximos passos
 
-1. `03_grid_features.py`: grade de 5 km, universo elegível e variáveis por origem temporal.
-2. Métodos de referência A (frequência) e B (área), com Recall@k e Precision@k no desenvolvimento.
-3. Grafo espaçotemporal (D) e ST-DBSCAN (C).
-4. Abrir o teste uma única vez, com os parâmetros congelados.
+1. Grafo espaçotemporal (D): limiares de 1, 2, 3 e 5 km × 30, 60 e 90 dias, com pontuação por célula incluindo a vizinhança. Ajuste só no desenvolvimento.
+2. ST-DBSCAN (C), com uma regra fixa para converter agrupamentos em pontuação por célula.
+3. Comparar C e D com A_24m e B_12m no desenvolvimento, inclusive no subgrupo de células-alvo sem histórico.
+4. Congelar tudo e abrir o teste (origens 2025-07 a 2026-07) uma única vez.
 
 ## Licença
 
