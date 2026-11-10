@@ -1,0 +1,15 @@
+{
+  "metodologia": "5 repetições por grade, ordem alternada, cada uma em subprocesso novo; carga dos dados não cronometrada (comum às grades); mediana reportada; tracemalloc mede alocações Python das etapas; ru_maxrss é o pico do processo inteiro (inclui dados e bibliotecas)",
+  "dados": "somente desenvolvimento (view_date ≤ 2025-06-30), 6 origens",
+  "cpu": "Apple M3 Pro",
+  "memoria_gb": 18.0,
+  "python": "3.15.2",
+  "plataforma": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "versoes": {
+    "numpy": "2.5.4",
+    "pandas": "3.1.1",
+    "geopandas": "1.2.0",
+    "shapely": "2.2.0",
+    "h3": "4.5.0"
+  }
+}

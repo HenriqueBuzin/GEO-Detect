@@ -1,0 +1,3 @@
+grade,atribuicao_centroides_s,universo_e_vizinhanca_s,pontuacao_e_selecao_6_origens_s,intersecoes_poligonos_dev_s,total_sem_intersecoes_s,pico_tracemalloc_pipeline_mb,pico_tracemalloc_com_intersecoes_mb,rss_max_processo_mb,celulas_universo
+h3_r7,0.020,0.886,0.412,0.197,1.365,22.800,22.800,225.300,26529.000
+quadrado_2.5km,0.024,0.759,0.438,0.033,1.208,25.100,25.100,227.300,24288.000
