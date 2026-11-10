@@ -1,0 +1,7 @@
+familia,celulas_elegiveis,vizinhos_por_celula,relacoes_direcionadas_no_universo,arestas_nao_direcionadas_no_universo,area_media_celula_km2,area_vizinhanca_km2,area_celula_mais_vizinhanca_km2
+h3_r7,26529,6,150126,75063,5.749,34.491,40.240
+quadrado_2.5km,24288,8,181624,90812,6.250,50.000,56.250
+quadrado_2.5km_vn,24288,4,92708,46354,6.250,25.000,31.250
+quadrado_aream_h3,26408,8,198014,99007,5.749,45.988,51.737
+hex_plano_6.25km2,24333,6,137398,68699,6.250,37.500,43.750
+hex_plano_aream_h3,26414,6,149504,74752,5.749,34.491,40.240

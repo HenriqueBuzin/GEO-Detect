@@ -26,6 +26,26 @@ Com só 3 origens independentes, os intervalos são largos e diferenças moderad
 
 ---
 
+## Decisão metodológica sobre a grade espacial
+
+Relatório completo: [`results/decisao_grade/RELATORIO_DECISAO_GRADE.md`](results/decisao_grade/RELATORIO_DECISAO_GRADE.md).
+
+- **Representação operacional principal:** quadrado de 2,5 × 2,5 km, com vizinhança.
+- **Controle científico obrigatório:** H3 r7, com vizinhança. Ele permanece em todas as comparações e no pôster.
+- **Teste independente (Recall@2%, 3 origens de 2026, 528 alertas):** 0,227 no quadrado e 0,225 no H3. A diferença H3 − quadrado é de −0,002, com IC 95% [−0,043; +0,035].
+- **A diferença não demonstra superioridade nem equivalência estatística.** O intervalo contém tanto +2 quanto −2 pontos percentuais. A escolha do quadrado se baseia em simplicidade e reprodutibilidade, e não no recall:
+  - área e orçamento exatos;
+  - encaixe na grade de 5 km;
+  - nenhuma função experimental;
+  - posicionamento auditável.
+- **Resolução:** o ganho de cerca de 7 pontos percentuais em relação à grade original de 5 km (0,155 → 0,225–0,227) está associado à mudança de resolução nas configurações avaliadas. É o mesmo nas duas formas.
+- **Sensibilidade (exploratória, só desenvolvimento):** a posição da grade pode influenciar o desempenho mais do que o formato das células.
+  - Só deslocar a origem do mesmo quadrado mudou o Recall@2% em até 3,4 pontos.
+  - Hexágonos e quadrados de mesma área diferiram, em média, de 0,1 a 0,35 ponto.
+- **Momento da decisão:** essa decisão operacional foi tomada **depois** da avaliação final e **não altera** o protocolo pré-registrado ([`protocolo/`](protocolo/), commit `41c29b4`), que usou o H3 r7 como configuração principal. Também não muda o veredito de P1 (inconclusivo) nem os resultados históricos.
+
+---
+
 ## Reprodução
 
 ```bash
@@ -38,6 +58,9 @@ python scripts/04_hexagonal_grid.py   # atribuição às grades quadradas e H3 (
 python scripts/05_compare_grids.py    # comparação entre grades com orçamento igual em km² (só desenvolvimento)
 python scripts/06_temporal_neighbors.py  # estatísticas descritivas de vizinhança temporal
 python scripts/08_resolution_curve.py # curva de resolução H3 r6–r10 (exploratória, só desenvolvimento)
+python scripts/10_temporal_graphs.py  # grafo espaçotemporal no H3 r7 (exploratório, só desenvolvimento)
+python scripts/11_decisao_grade.py    # decisão da grade: deslocamentos, bordas (exploratório, só desenvolvimento)
+python scripts/11_decisao_grade.py --bench  # custo H3 r7 × quadrado 2,5 km
 python -m pytest tests                # testes de geometria, adjacência, datas e vazamento temporal
 ```
 
@@ -235,9 +258,21 @@ Recall@2% (alertas futuros capturados) nas 3 origens independentes, 2026-01 a 20
 | quadrado 2,5 km + vizinhança (controle) | 0,227 |
 | quadrado 5 km, frequência histórica (referência original) | 0,155 |
 
+Os papéis "principal" e "controle" são os do protocolo para P1. Depois do teste, a representação operacional passou a ser o quadrado de 2,5 km (ver [Decisão metodológica sobre a grade espacial](#decisão-metodológica-sobre-a-grade-espacial)).
+
 - **P1, hexágono contra quadrado de área parecida:** −0,002, IC 95% [−0,043; +0,035]. **Inconclusivo:** a forma não fez diferença.
 - **Células de cerca de 6 km² com vizinhança contra o quadrado de 5 km sem vizinhança (S3 e S4):** +0,070 e +0,072, IC exclui zero, em 3 de 3 origens (+45% relativos), igual nas duas formas. São comparações secundárias pré-especificadas, interpretadas como ganho de resolução.
 - **Vizinhança imediata (S1 e S2):** sem ganho com 2% (−0,007 e −0,005, inconclusivo). Com 5%, o ganho foi de +0,08 a +0,10, mas apenas descritivo, não confirmatório.
+
+---
+
+## Grafo espaçotemporal (branch `feature/temporal-graphs`, exploratório)
+
+Relatório: [`results/grafos/RELATORIO.md`](results/grafos/RELATORIO.md). Feito no H3 r7, só no desenvolvimento, porque o teste de 2026 já foi usado.
+
+- **Decaimento temporal** (T) e **grafo + decaimento** (GT): iguais à vizinhança simples C nas origens de avaliação (+0,006 e +0,001, IC inclui zero).
+- **Peso por episódio espaçotemporal** (G): ligeiramente pior que C (−0,014, IC exclui zero).
+- **A recorrência espacial de longo prazo é o sinal dominante.** 66% dos alertas futuros caem em células sem histórico de 24 meses, e nenhum modelo os antecipa.
 
 ---
 
@@ -255,17 +290,21 @@ scripts/05_compare_grids.py    modelos A/B/C/D em 6 grades com orçamento igual 
 scripts/06_temporal_neighbors.py  probabilidades de transição e novas detecções junto a vizinhos ativos
 scripts/07_final_evaluation.py    avaliação final pré-registrada (modo dev de validação e modo teste de execução única)
 scripts/08_resolution_curve.py    curva de resolução H3 r6–r10, exploratória (só desenvolvimento)
-tests/                         27 testes (dados sintéticos): área, adjacência, datas, vazamento temporal
+scripts/10_temporal_graphs.py     grafo espaçotemporal e decaimento × frequência, vizinhança e raio (exploratório)
+scripts/11_decisao_grade.py       decisão da grade: deslocamentos, sobreposição, bordas e custo (exploratório)
+geodetect/grafos.py            grafo de alertas (arestas por distância e Δt), episódios e pesos interpretáveis
+tests/                         57 testes (dados sintéticos): área, adjacência, datas, vazamento temporal
 results/audit/                 tabelas, figuras e relatório JSON da auditoria
 results/baselines_dev/         métricas por origem, resumo, parâmetros congelados e figuras
 results/hexagonal/             comparação entre grades, vizinhança temporal e RELATORIO.md
+results/decisao_grade/         RELATORIO_DECISAO_GRADE.md: escolha da grade principal e controles
 data/raw/                      dados brutos (não versionados, exceto os metadados)
 data/processed/                variáveis e atribuições (não versionadas, regeneradas pelos scripts 03 e 04)
 ```
 
 ## Próximos passos
 
-1. Escolher a grade de cerca de 6 km² para os próximos trabalhos (H3 r7 ou quadrado de 2,5 km, equivalentes no teste).
+1. ~~Escolher a grade de cerca de 6 km².~~ Decidido: quadrado de 2,5 km + vizinhança como principal e H3 r7 como controle. As duas formas empataram no teste, sem equivalência demonstrada ([`results/decisao_grade/RELATORIO_DECISAO_GRADE.md`](results/decisao_grade/RELATORIO_DECISAO_GRADE.md)).
 2. Grafo espaçotemporal e ST-DBSCAN, desenvolvidos só nas origens até 2026-07. O teste independente de 2026 **já foi usado**: um modelo novo precisa de alvos a partir de out/2026, ou deve ser apresentado como exploratório.
 3. Resumo e pôster para a GEOMRIT 2027 com o ganho de resolução em relação à grade de 5 km e a ausência de vantagem demonstrada do formato hexagonal.
 

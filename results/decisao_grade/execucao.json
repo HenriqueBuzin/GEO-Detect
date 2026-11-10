@@ -1,0 +1,32 @@
+{
+  "natureza": "EXPLORATÓRIA, somente desenvolvimento; não altera nem substitui a avaliação final",
+  "dados_ate": "2025-06-18",
+  "origens": [
+    "2024-01-01",
+    "2024-04-01",
+    "2024-07-01",
+    "2024-10-01",
+    "2025-01-01",
+    "2025-04-01"
+  ],
+  "w": 0.5,
+  "orcamentos": [
+    0.01,
+    0.02,
+    0.05
+  ],
+  "deslocamentos_por_familia": 16,
+  "semente": 2027,
+  "pixel_m": 500,
+  "area_media_h3_r7_km2": 5.748519280741444,
+  "tempo_s": 128.4,
+  "versoes": {
+    "numpy": "2.5.4",
+    "pandas": "3.1.1",
+    "geopandas": "1.2.0",
+    "shapely": "2.2.0",
+    "h3": "4.5.0"
+  },
+  "python": "3.15.2",
+  "plataforma": "macOS-27.2-arm64-arm-64bit-Mach-O"
+}

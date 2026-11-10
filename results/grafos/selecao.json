@@ -1,0 +1,18 @@
+{
+  "criterio": "maior recall agregado (alertas capturados / alertas-alvo) com 2%, origens de ajuste",
+  "origens_ajuste": [
+    "2024-01-01",
+    "2024-04-01",
+    "2024-07-01"
+  ],
+  "origens_avaliacao": [
+    "2024-10-01",
+    "2025-01-01",
+    "2025-04-01"
+  ],
+  "escolhas": {
+    "T": "T_730",
+    "G": "G_1_90",
+    "GT": "GT_365_2_60"
+  }
+}
