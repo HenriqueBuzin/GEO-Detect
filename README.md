@@ -38,6 +38,7 @@ python scripts/04_hexagonal_grid.py   # atribuição às grades quadradas e H3 (
 python scripts/05_compare_grids.py    # comparação entre grades com orçamento igual em km² (só desenvolvimento)
 python scripts/06_temporal_neighbors.py  # estatísticas descritivas de vizinhança temporal
 python scripts/08_resolution_curve.py # curva de resolução H3 r6–r10 (exploratória, só desenvolvimento)
+python scripts/10_temporal_graphs.py  # grafo espaçotemporal no H3 r7 (exploratório, só desenvolvimento)
 python -m pytest tests                # testes de geometria, adjacência, datas e vazamento temporal
 ```
 
@@ -241,6 +242,16 @@ Recall@2% (alertas futuros capturados) nas 3 origens independentes, 2026-01 a 20
 
 ---
 
+## Grafo espaçotemporal (branch `feature/temporal-graphs`, exploratório)
+
+Relatório: [`results/grafos/RELATORIO.md`](results/grafos/RELATORIO.md). Feito no H3 r7, só no desenvolvimento, porque o teste de 2026 já foi usado.
+
+- **Decaimento temporal** (T) e **grafo + decaimento** (GT): iguais à vizinhança simples C nas origens de avaliação (+0,006 e +0,001, IC inclui zero).
+- **Peso por episódio espaçotemporal** (G): ligeiramente pior que C (−0,014, IC exclui zero).
+- **A recorrência espacial de longo prazo é o sinal dominante.** 66% dos alertas futuros caem em células sem histórico de 24 meses, e nenhum modelo os antecipa.
+
+---
+
 ## Estrutura
 
 ```
@@ -255,6 +266,8 @@ scripts/05_compare_grids.py    modelos A/B/C/D em 6 grades com orçamento igual 
 scripts/06_temporal_neighbors.py  probabilidades de transição e novas detecções junto a vizinhos ativos
 scripts/07_final_evaluation.py    avaliação final pré-registrada (modo dev de validação e modo teste de execução única)
 scripts/08_resolution_curve.py    curva de resolução H3 r6–r10, exploratória (só desenvolvimento)
+scripts/10_temporal_graphs.py     grafo espaçotemporal e decaimento × frequência, vizinhança e raio (exploratório)
+geodetect/grafos.py            grafo de alertas (arestas por distância e Δt), episódios e pesos interpretáveis
 tests/                         27 testes (dados sintéticos): área, adjacência, datas, vazamento temporal
 results/audit/                 tabelas, figuras e relatório JSON da auditoria
 results/baselines_dev/         métricas por origem, resumo, parâmetros congelados e figuras
