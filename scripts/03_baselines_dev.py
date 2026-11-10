@@ -45,25 +45,14 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from geodetect.avaliacao import GAP, HORIZONTE, RAIO_UNIVERSO_CEL, ganho_esperado, origens_dev  # noqa: E402
 from geodetect.dados import DEV, carregar_preparado  # noqa: E402
 
-GAP = pd.DateOffset(months=1)
-HORIZONTE = pd.DateOffset(months=3)
-RAIO_UNIVERSO_CEL = 2  # 2 células = 10 km
 JANELAS = {"3m": 3, "12m": 12, "24m": 24, "60m": 60, "tudo": None}
 FRACOES = (0.01, 0.02, 0.05)
 K_ABS = (25, 50, 100, 200)
 ORCAMENTO_SELECAO = "2%"  # orçamento usado para escolher a janela de cada família
 CURVA_K = np.unique(np.r_[np.arange(5, 100, 5), np.arange(100, 601, 25)])
-
-
-def origens_dev() -> list[pd.Timestamp]:
-    ini, fim = pd.Timestamp(DEV[0]), pd.Timestamp(DEV[1])
-    out, t = [], ini
-    while t + HORIZONTE - pd.Timedelta(days=1) <= fim:
-        out.append(t)
-        t = t + HORIZONTE
-    return out
 
 
 def universo(disp: pd.DataFrame) -> pd.DataFrame:
@@ -86,20 +75,6 @@ def variaveis(u: pd.DataFrame, disp: pd.DataFrame, corte: pd.Timestamp) -> pd.Da
     ultimo = disp.groupby("celula")["view_date"].max().reindex(v.index)
     v["dias_desde_ultimo"] = (corte - ultimo).dt.days
     return v
-
-
-def ganho_esperado(score: np.ndarray, valor: np.ndarray, k: int) -> float:
-    """Soma esperada de `valor` nas k células de maior `score`, com desempate aleatório."""
-    k = min(k, len(score))
-    if k == 0:
-        return 0.0
-    ordem = np.argsort(-score, kind="stable")
-    s_ord = score[ordem]
-    limiar = s_ord[k - 1]
-    acima = score > limiar
-    empate = score == limiar
-    vagas = k - int(acima.sum())
-    return float(valor[acima].sum() + vagas * valor[empate].mean())
 
 
 def avaliar(v: pd.DataFrame, alvo: pd.DataFrame, origem: pd.Timestamp) -> list[dict]:

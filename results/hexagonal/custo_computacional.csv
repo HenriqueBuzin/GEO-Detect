@@ -1,0 +1,7 @@
+grade,celulas_regiao_max,tempo_preparo_s,tempo_total_s,pico_memoria_mb
+quadrado_5km,6072,0.19,0.73,10.0
+h3_r6,3796,0.45,0.93,7.0
+h3_r7,26529,0.86,1.66,31.8
+h3_r8,185650,3.72,6.89,208.6
+quadrado_2.5km,24288,0.69,1.52,33.6
+quadrado_1km,151800,4.99,7.88,195.1
