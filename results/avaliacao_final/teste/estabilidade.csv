@@ -1,0 +1,16 @@
+grupo,modelo,origem,jaccard_com_origem_anterior
+independente,quadrado_5km_A,2026-04-01,0.6104
+independente,h3_r7_C,2026-04-01,0.8274
+independente,h3_r7_A,2026-04-01,0.8060
+independente,quadrado_2.5km_C,2026-04-01,0.8306
+independente,quadrado_2.5km_A,2026-04-01,0.7408
+independente,quadrado_5km_A,2026-07-01,0.4737
+independente,h3_r7_C,2026-07-01,0.5813
+independente,h3_r7_A,2026-07-01,0.5611
+independente,quadrado_2.5km_C,2026-07-01,0.5946
+independente,quadrado_2.5km_A,2026-07-01,0.4824
+semi_independente,quadrado_5km_A,2025-10-01,0.5375
+semi_independente,h3_r7_C,2025-10-01,0.5931
+semi_independente,h3_r7_A,2025-10-01,0.5767
+semi_independente,quadrado_2.5km_C,2025-10-01,0.6194
+semi_independente,quadrado_2.5km_A,2025-10-01,0.5984

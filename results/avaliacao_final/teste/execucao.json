@@ -1,0 +1,27 @@
+{
+  "modo": "teste",
+  "inicio_utc": "2026-11-10T19:04:35+00:00",
+  "protocolo_sha256": "652a996bd97f59eba6809a6636c77eebf08b916d79bf7dc72ebb80add3bf28ad",
+  "protocolo_versao": "1.0",
+  "git": {
+    "commit_head": "41c29b48f1ac1e46a33f3af852013782632071be",
+    "commit_protocolo": "41c29b48f1ac1e46a33f3af852013782632071be",
+    "branch": "feature/hexagonal-h3"
+  },
+  "dados_sha256_ok": true,
+  "dados_ate": "2026-09-30",
+  "fim_utc": "2026-11-10T19:04:37+00:00",
+  "bootstrap": {
+    "replicas": 2000,
+    "semente": 2027,
+    "blocos": "origem × quadrado 5 km"
+  },
+  "regra_de_decisao": "superior se o IC 95% da diferença estiver todo acima de 0; inferior se estiver todo abaixo de 0; caso contrário, inconclusivo. A conclusão principal usa SOMENTE as origens independentes e o orçamento de 2%.",
+  "versoes": {
+    "numpy": "2.5.4",
+    "pandas": "3.1.1",
+    "geopandas": "1.2.0",
+    "shapely": "2.2.0",
+    "h3": "4.5.0"
+  }
+}

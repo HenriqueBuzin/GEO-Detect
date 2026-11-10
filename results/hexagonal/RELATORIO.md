@@ -1,5 +1,10 @@
 # Experimento: grades hexagonais H3 × quadradas
 
+> **Atualização (avaliação final pré-registrada):** no teste independente de 2026, o H3 r7 + vizinhança e o quadrado
+> de 2,5 km + vizinhança empataram (0,225 × 0,227; diferença −0,002, IC 95% [−0,043; +0,035]). A vantagem do
+> hexágono vista abaixo **não se confirmou**. O ganho de resolução se confirmou (+0,07 sobre o quadrado de 5 km).
+> Ver [`../avaliacao_final/RELATORIO_AVALIACAO_FINAL.md`](../avaliacao_final/RELATORIO_AVALIACAO_FINAL.md).
+
 **Branch:** `feature/hexagonal-h3` · **Status:** resultados preliminares, só no período de desenvolvimento · **Teste:** selado, não lido
 
 Pergunta: *a adjacência hexagonal e as relações temporais melhoram a priorização de áreas com novos alertas

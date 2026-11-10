@@ -200,6 +200,25 @@ Recall de alertas futuros com 2% da área (média de 6 origens):
 
 ---
 
+## Avaliação final pré-registrada (teste)
+
+Protocolo: [`protocolo/PROTOCOLO_AVALIACAO_FINAL.md`](protocolo/PROTOCOLO_AVALIACAO_FINAL.md), congelado no commit `41c29b4`
+antes de qualquer leitura dos alvos. Execução única. Relatório: [`results/avaliacao_final/RELATORIO_AVALIACAO_FINAL.md`](results/avaliacao_final/RELATORIO_AVALIACAO_FINAL.md).
+
+Recall@2% (alertas futuros capturados) nas 3 origens independentes, 2026-01 a 2026-07, com 528 alertas:
+
+| Modelo | Recall@2% |
+|---|---|
+| H3 r7 + vizinhança (principal) | 0,225 |
+| quadrado 2,5 km + vizinhança (controle) | 0,227 |
+| quadrado 5 km, frequência histórica (referência original) | 0,155 |
+
+- **P1, hexágono contra quadrado de área parecida:** −0,002, IC 95% [−0,043; +0,035]. **Inconclusivo:** a forma não fez diferença.
+- **Resolução de cerca de 6 km² contra 5 km:** +0,07, IC [+0,036; +0,11], em 3 de 3 origens. É o **ganho confirmado** (+45% relativos), igual nas duas formas.
+- **Vizinhança imediata:** nula com 2% e grande com 5% (+0,08 a +0,10). Este último resultado é descritivo.
+
+---
+
 ## Estrutura
 
 ```
@@ -222,11 +241,9 @@ data/processed/                variáveis e atribuições (não versionadas, reg
 
 ## Próximos passos
 
-1. Decidir e congelar a grade principal (H3 r7 ou quadrado de 2,5 km) e o modelo de vizinhança antes de abrir o teste.
-2. Grafo espaçotemporal (GEO-Detect): limiares de 1, 2, 3 e 5 km × 30, 60 e 90 dias, agregados na grade escolhida. Ajuste só no desenvolvimento.
-3. ST-DBSCAN, com uma regra fixa para converter agrupamentos em pontuação por célula.
-4. Comparar com A e C* no desenvolvimento, inclusive no subgrupo de células-alvo sem histórico.
-5. Congelar tudo e abrir o teste (origens 2025-07 a 2026-07) uma única vez.
+1. Decidir se a branch `feature/hexagonal-h3` entra na `main`, e com qual grade de cerca de 6 km² (H3 r7 ou quadrado de 2,5 km, equivalentes no teste).
+2. Grafo espaçotemporal e ST-DBSCAN, desenvolvidos só nas origens até 2026-07. O teste independente de 2026 **já foi usado**: um modelo novo precisa de alvos a partir de out/2026, ou deve ser apresentado como exploratório.
+3. Resumo e pôster para a GEOMRIT 2027 com o ganho confirmado de resolução e o resultado nulo da forma.
 
 ## Licença
 
