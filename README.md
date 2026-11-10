@@ -24,6 +24,16 @@ Detalhes em [`results/avaliacao_final/RELATORIO_AVALIACAO_FINAL.md`](results/ava
 
 Com só 3 origens independentes, os intervalos são largos e diferenças moderadas não podem ser excluídas.
 
+> **Decisão da grade (10/11/2026, posterior ao teste e operacional):** a representação principal passa a ser o
+> **quadrado de 2,5 km + vizinhança**. O **H3 r7 + vizinhança** fica como controle geométrico, e o quadrado de 5 km
+> (contagem) como referência original.
+> - Nenhuma forma mostrou vantagem de 2 pontos em Recall@2%, e a equivalência também não foi demonstrada.
+> - Com desempenho indistinguível, o quadrado foi escolhido pela simplicidade e reprodutibilidade: área e orçamento exatos, encaixe na grade de 5 km, sem função experimental, posicionamento auditável.
+> - Isso **não** é uma afirmação de superioridade e não altera o protocolo nem o veredito de P1.
+>
+> Análise completa, com estabilidade ao deslocamento da grade, bordas, custo e separação entre resolução, forma e
+> vizinhança (exploratória, só desenvolvimento): [`results/decisao_grade/RELATORIO_DECISAO_GRADE.md`](results/decisao_grade/RELATORIO_DECISAO_GRADE.md).
+
 ---
 
 ## Reprodução
@@ -39,6 +49,8 @@ python scripts/05_compare_grids.py    # comparação entre grades com orçamento
 python scripts/06_temporal_neighbors.py  # estatísticas descritivas de vizinhança temporal
 python scripts/08_resolution_curve.py # curva de resolução H3 r6–r10 (exploratória, só desenvolvimento)
 python scripts/10_temporal_graphs.py  # grafo espaçotemporal no H3 r7 (exploratório, só desenvolvimento)
+python scripts/11_decisao_grade.py    # decisão da grade: deslocamentos, bordas (exploratório, só desenvolvimento)
+python scripts/11_decisao_grade.py --bench  # custo H3 r7 × quadrado 2,5 km
 python -m pytest tests                # testes de geometria, adjacência, datas e vazamento temporal
 ```
 
@@ -236,6 +248,8 @@ Recall@2% (alertas futuros capturados) nas 3 origens independentes, 2026-01 a 20
 | quadrado 2,5 km + vizinhança (controle) | 0,227 |
 | quadrado 5 km, frequência histórica (referência original) | 0,155 |
 
+Os papéis "principal" e "controle" são os do protocolo para P1. Depois do teste, a representação operacional passou a ser o quadrado de 2,5 km (ver a nota na conclusão científica).
+
 - **P1, hexágono contra quadrado de área parecida:** −0,002, IC 95% [−0,043; +0,035]. **Inconclusivo:** a forma não fez diferença.
 - **Células de cerca de 6 km² com vizinhança contra o quadrado de 5 km sem vizinhança (S3 e S4):** +0,070 e +0,072, IC exclui zero, em 3 de 3 origens (+45% relativos), igual nas duas formas. São comparações secundárias pré-especificadas, interpretadas como ganho de resolução.
 - **Vizinhança imediata (S1 e S2):** sem ganho com 2% (−0,007 e −0,005, inconclusivo). Com 5%, o ganho foi de +0,08 a +0,10, mas apenas descritivo, não confirmatório.
@@ -267,18 +281,20 @@ scripts/06_temporal_neighbors.py  probabilidades de transição e novas detecç�
 scripts/07_final_evaluation.py    avaliação final pré-registrada (modo dev de validação e modo teste de execução única)
 scripts/08_resolution_curve.py    curva de resolução H3 r6–r10, exploratória (só desenvolvimento)
 scripts/10_temporal_graphs.py     grafo espaçotemporal e decaimento × frequência, vizinhança e raio (exploratório)
+scripts/11_decisao_grade.py       decisão da grade: deslocamentos, sobreposição, bordas e custo (exploratório)
 geodetect/grafos.py            grafo de alertas (arestas por distância e Δt), episódios e pesos interpretáveis
-tests/                         27 testes (dados sintéticos): área, adjacência, datas, vazamento temporal
+tests/                         57 testes (dados sintéticos): área, adjacência, datas, vazamento temporal
 results/audit/                 tabelas, figuras e relatório JSON da auditoria
 results/baselines_dev/         métricas por origem, resumo, parâmetros congelados e figuras
 results/hexagonal/             comparação entre grades, vizinhança temporal e RELATORIO.md
+results/decisao_grade/         RELATORIO_DECISAO_GRADE.md: escolha da grade principal e controles
 data/raw/                      dados brutos (não versionados, exceto os metadados)
 data/processed/                variáveis e atribuições (não versionadas, regeneradas pelos scripts 03 e 04)
 ```
 
 ## Próximos passos
 
-1. Escolher a grade de cerca de 6 km² para os próximos trabalhos (H3 r7 ou quadrado de 2,5 km, equivalentes no teste).
+1. ~~Escolher a grade de cerca de 6 km².~~ Decidido: quadrado de 2,5 km + vizinhança como principal e H3 r7 como controle. As duas formas empataram no teste, sem equivalência demonstrada ([`results/decisao_grade/RELATORIO_DECISAO_GRADE.md`](results/decisao_grade/RELATORIO_DECISAO_GRADE.md)).
 2. Grafo espaçotemporal e ST-DBSCAN, desenvolvidos só nas origens até 2026-07. O teste independente de 2026 **já foi usado**: um modelo novo precisa de alvos a partir de out/2026, ou deve ser apresentado como exploratório.
 3. Resumo e pôster para a GEOMRIT 2027 com o ganho de resolução em relação à grade de 5 km e a ausência de vantagem demonstrada do formato hexagonal.
 
