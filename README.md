@@ -58,6 +58,7 @@ python scripts/04_hexagonal_grid.py   # atribuição às grades quadradas e H3 (
 python scripts/05_compare_grids.py    # comparação entre grades com orçamento igual em km² (só desenvolvimento)
 python scripts/06_temporal_neighbors.py  # estatísticas descritivas de vizinhança temporal
 python scripts/08_resolution_curve.py # curva de resolução H3 r6–r10 (exploratória, só desenvolvimento)
+python scripts/09_r15_experiment.py   # H3 r15: viabilidade e experimento amostrado (~5 min, exploratório)
 python scripts/10_temporal_graphs.py  # grafo espaçotemporal no H3 r7 (exploratório, só desenvolvimento)
 python scripts/11_decisao_grade.py    # decisão da grade: deslocamentos, bordas (exploratório, só desenvolvimento)
 python scripts/11_decisao_grade.py --bench  # custo H3 r7 × quadrado 2,5 km
@@ -266,13 +267,24 @@ Os papéis "principal" e "controle" são os do protocolo para P1. Depois do test
 
 ---
 
-## Grafo espaçotemporal (branch `feature/temporal-graphs`, exploratório)
+## Grafo espaçotemporal (exploratório)
 
 Relatório: [`results/grafos/RELATORIO.md`](results/grafos/RELATORIO.md). Feito no H3 r7, só no desenvolvimento, porque o teste de 2026 já foi usado.
 
 - **Decaimento temporal** (T) e **grafo + decaimento** (GT): iguais à vizinhança simples C nas origens de avaliação (+0,006 e +0,001, IC inclui zero).
 - **Peso por episódio espaçotemporal** (G): ligeiramente pior que C (−0,014, IC exclui zero).
 - **A recorrência espacial de longo prazo é o sinal dominante.** 66% dos alertas futuros caem em células sem histórico de 24 meses, e nenhum modelo os antecipa.
+
+---
+
+## H3 resolução 15 (exploratório)
+
+Relatório: [`results/r15/RELATORIO.md`](results/r15/RELATORIO.md). O pedido original era testar o r15. Feito só no desenvolvimento.
+
+- **Enumeração completa inviável:** cerca de 1,7 × 10¹¹ células e cerca de 1.360 GB só de identificadores. O script bloqueou a enumeração pelos limites de recursos.
+- **Precisão do dado:** a célula r15 (aresta de 0,6 m) é cerca de 40 vezes mais fina que os segmentos dos polígonos DETER (mediana de 24,6 m).
+- **Sem raio físico, o r15 só fragmenta os polígonos:** Recall@2% de 0,020 (aleatório) contando a própria célula e de 0,057 usando a pegada dos polígonos.
+- **Com raio de 1 km, empata com o r7 + vizinhos** (0,314 × 0,311). Não foi verificado se o ganho exige o r15: o controle em r8–r12 ficou pendente.
 
 ---
 
@@ -290,6 +302,7 @@ scripts/05_compare_grids.py    modelos A/B/C/D em 6 grades com orçamento igual 
 scripts/06_temporal_neighbors.py  probabilidades de transição e novas detecções junto a vizinhos ativos
 scripts/07_final_evaluation.py    avaliação final pré-registrada (modo dev de validação e modo teste de execução única)
 scripts/08_resolution_curve.py    curva de resolução H3 r6–r10, exploratória (só desenvolvimento)
+scripts/09_r15_experiment.py      viabilidade, fragmentação e experimento amostrado em H3 r15 (exploratório)
 scripts/10_temporal_graphs.py     grafo espaçotemporal e decaimento × frequência, vizinhança e raio (exploratório)
 scripts/11_decisao_grade.py       decisão da grade: deslocamentos, sobreposição, bordas e custo (exploratório)
 geodetect/grafos.py            grafo de alertas (arestas por distância e Δt), episódios e pesos interpretáveis
