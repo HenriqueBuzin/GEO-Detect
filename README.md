@@ -37,6 +37,7 @@ python scripts/03_baselines_dev.py    # grade, universo, variáveis e métodos A
 python scripts/04_hexagonal_grid.py   # atribuição às grades quadradas e H3 (centroide e interseção)
 python scripts/05_compare_grids.py    # comparação entre grades com orçamento igual em km² (só desenvolvimento)
 python scripts/06_temporal_neighbors.py  # estatísticas descritivas de vizinhança temporal
+python scripts/08_resolution_curve.py # curva de resolução H3 r6–r10 (exploratória, só desenvolvimento)
 python -m pytest tests                # testes de geometria, adjacência, datas e vazamento temporal
 ```
 
@@ -214,6 +215,10 @@ Recall de alertas futuros com 2% da área (média de 6 origens):
 - **O hexágono parecia superar o quadrado de área parecida em cerca de 6 km²** (+0,04 a +0,07 na média por origem), mas não em cerca de 1 km². Isso não se confirmou no teste.
 - **Novas detecções aparecem ao lado de células ativas** com frequência 3 a 19 vezes a esperada. É uma estatística descritiva. Ainda assim, de 77% a 92% delas não tinham vizinho ativo no trimestre anterior.
 - Com base nisso, o protocolo congelou o H3 r7 com vizinhança como configuração principal e o quadrado de 2,5 km com vizinhança como controle.
+- **Curva de resolução r6 → r10**, também exploratória e só no desenvolvimento ([`results/resolucao/RELATORIO.md`](results/resolucao/RELATORIO.md)):
+  - O pico está no **r7**: Recall@2% de 0,311 com vizinhança.
+  - O r8 só se aproxima dele com vizinhança (0,298).
+  - O r9 (0,166) e o r10 (0,061) pioram muito. No r10, só 0,9% dos alertas futuros caem numa célula com histórico próprio.
 
 ---
 
@@ -248,6 +253,8 @@ scripts/03_baselines_dev.py    grade, universo por origem, variáveis e métodos
 scripts/04_hexagonal_grid.py   atribuição dos alertas a 6 grades, validação de área, mapas, custo
 scripts/05_compare_grids.py    modelos A/B/C/D em 6 grades com orçamento igual em km²
 scripts/06_temporal_neighbors.py  probabilidades de transição e novas detecções junto a vizinhos ativos
+scripts/07_final_evaluation.py    avaliação final pré-registrada (modo dev de validação e modo teste de execução única)
+scripts/08_resolution_curve.py    curva de resolução H3 r6–r10, exploratória (só desenvolvimento)
 tests/                         27 testes (dados sintéticos): área, adjacência, datas, vazamento temporal
 results/audit/                 tabelas, figuras e relatório JSON da auditoria
 results/baselines_dev/         métricas por origem, resumo, parâmetros congelados e figuras

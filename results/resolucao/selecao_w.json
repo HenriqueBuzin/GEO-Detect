@@ -1,0 +1,10 @@
+{
+  "criterio": "maior recall m\u00e9dio, 2%, origens 1\u20133",
+  "escolhas": {
+    "r6": "C_0.25",
+    "r7": "C_0.5",
+    "r8": "C_0.25",
+    "r9": "C_0.25",
+    "r10": "C_0.25"
+  }
+}
