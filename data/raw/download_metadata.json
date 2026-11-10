@@ -1,0 +1,18 @@
+{
+  "fonte": "INPE/TerraBrasilis — DETER Amazônia (WFS)",
+  "endpoint": "https://terrabrasilis.dpi.inpe.br/geoserver/deter-amz/ows",
+  "camada": "deter-amz:deter_amz",
+  "filtro_cql": "classname='MINERACAO' AND uf='PA'",
+  "crs": "EPSG:4674",
+  "registros": 6770,
+  "deter_updated_date": "2026-10-30",
+  "baixado_em_utc": "2026-11-10T17:36:24+00:00",
+  "arquivo": "data/raw/deter_amz_mineracao_pa.geojson",
+  "sha256": "b4b4224a71c78bfc6741da22f6c3c89eb7d34795a7f0856cafbbb5dc7cc8e4d1",
+  "limite_uf": {
+    "fonte": "IBGE malhas v3",
+    "arquivo": "data/raw/limite_pa_ibge.geojson",
+    "sha256": "94f9a7e7f1e659b0e98f8d1221af859adbdb815be051994fd73f9a8703df5467"
+  },
+  "observacao": "O WFS público expõe apenas os avisos DETER em área de floresta. Os avisos de não floresta (experimentais) não estão nesta camada."
+}

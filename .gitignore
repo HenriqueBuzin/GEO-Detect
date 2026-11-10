@@ -1,52 +1,13 @@
-# Prerequisites
-*.d
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+# Dados brutos (reproduzíveis com scripts/01_download_deter.py; conferir SHA-256 em download_metadata.json)
+data/raw/*
+!data/raw/download_metadata.json
 
-# Linker output
-*.ilk
-*.map
-*.exp
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+# Sistema
+.DS_Store

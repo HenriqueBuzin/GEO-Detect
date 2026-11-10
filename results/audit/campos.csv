@@ -1,0 +1,16 @@
+campo,tipo,nulos,pct_nulos,valores_distintos,exemplo
+id,str,0,0.0,6657,deter_amz.100006_hist
+gid,str,0,0.0,6657,100006_hist
+classname,str,0,0.0,1,MINERACAO
+quadrant,str,6251,92.33,5,
+path_row,str,0,0.0,119,169105
+view_date,datetime64[ms],0,0.0,913,2018-01-14 00:00:00
+sensor,str,0,0.0,3,AWFI
+satellite,str,0,0.0,4,CBERS-4
+areauckm,float64,0,0.0,4118,0.0
+uc,str,2642,39.03,22,ÁREA DE PROTEÇÃO AMBIENTAL DO TAPAJÓS
+areamunkm,float64,0,0.0,6768,0.0797932343228501
+municipality,str,0,0.0,34,Itaituba
+mun_geocod,str,0,0.0,34,1503606
+uf,str,0,0.0,1,PA
+publish_month,datetime64[ms],0,0.0,118,2018-01-01 00:00:00

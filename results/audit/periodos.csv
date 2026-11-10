@@ -1,0 +1,4 @@
+periodo,inicio,fim,alertas,area_km2,celulas_5km,meses_com_alerta,datas_de_imagem,pct_em_uc
+historico_pre_recorte,2016-08-02,2023-12-31,5283,508.71,1344,85,648,61.0
+desenvolvimento,2024-01-01,2025-06-30,629,54.56,410,17,121,72.0
+teste,2025-07-01,2025-12-31,171,13.79,143,6,43,64.9
