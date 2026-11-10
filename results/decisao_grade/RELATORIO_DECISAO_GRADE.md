@@ -255,7 +255,7 @@ Captura em função da distância do centroide do alerta à borda da célula, no
 
   A vantagem que motivou o H3 era, em sua maior parte, **posicionamento e área**, e não forma. A única evidência confirmatória, P1, é compatível com isso.
 
-### C. Vizinhança — **efeito real, independente da forma e dependente do orçamento**
+### C. Vizinhança — **sem ganho confirmado com 2%; ganho grande com 5% (descritivo), igual nas duas formas**
 - **Teste (descritivo):**
   - Com 2%, C − A = −0,7 (H3) e −0,5 (quadrado), inconclusivo.
   - Com 5%, +10,1 e +8,3 pontos, com IC excluindo zero e 3 de 3 origens nas duas formas.
@@ -271,7 +271,10 @@ Captura em função da distância do centroide do alerta à borda da célula, no
 
 - O ganho da vizinhança é praticamente o mesmo nas duas formas.
 - Trocar 8 por 4 vizinhos, ou 50 por 25 km² de vizinhança, muda menos de 0,3 ponto.
-- **Conclusão:** incorporar informação vizinha melhora a priorização **independentemente da forma**. O que importa é haver vizinhança, e não o seu desenho exato.
+- **Conclusão:**
+  - **No orçamento primário de 2%, a vizinhança não mostrou ganho no teste** (−0,7 e −0,5 ponto, inconclusivo). No desenvolvimento, o ganho foi pequeno: +1,0 a +1,5 ponto, abaixo da margem de 2 pontos.
+  - **Com 5%, o ganho é grande e consistente** (+8 a +10 pontos no teste e no desenvolvimento), mas é descritivo, não confirmatório.
+  - Quando aparece, o efeito é praticamente o mesmo nas duas formas. O desenho exato da vizinhança (4 ou 8 vizinhos, quadrado ou hexágono) muda menos de 0,3 ponto.
 
 ---
 
@@ -329,10 +332,14 @@ e a escolha **não** foi feita por causa da diferença de 0,002. Se o critério 
 
 ### Mensagem sugerida para o pôster
 
-> "Com orçamento de 2% da área, células de ~6 km² com vizinhança capturam ~45% mais alertas futuros que a grade de
-> 5 km (IC exclui zero, 3/3 trimestres independentes). A forma da célula não importa: hexágonos H3 e quadrados de área
-> parecida empatam (−0,2 p.p., IC [−4,3; +3,5]). A vantagem aparente dos hexágonos no desenvolvimento era resolução e
-> posicionamento da grade. Adotamos o quadrado de 2,5 km pela simplicidade e reprodutibilidade."
+> "Com orçamento de 2% da área, células de ~6 km² capturam ~45% mais alertas futuros que a grade de 5 km (IC exclui
+> zero, 3/3 trimestres independentes). Não encontramos diferença entre hexágonos H3 e quadrados de área parecida
+> (−0,2 p.p., IC [−4,3; +3,5]); o intervalo não permite afirmar equivalência. A vantagem aparente dos hexágonos no
+> desenvolvimento era, em sua maior parte, resolução e posicionamento da grade. Adotamos o quadrado de 2,5 km pela
+> simplicidade e reprodutibilidade."
+>
+> Ao citar "com vizinhança": as configurações testadas incluíam vizinhança, mas com 2% ela não acrescentou ganho no
+> teste. O ganho de 45% deve ser atribuído à resolução, não à vizinhança.
 
 ### O que mudaria esta decisão
 
@@ -341,5 +348,5 @@ e a escolha **não** foi feita por causa da diferença de 0,002. Se o critério 
 
 ### Pendências
 
-- O README e o `RELATORIO_AVALIACAO_FINAL.md` ainda descrevem o H3 r7 como configuração principal. Se você aprovar esta decisão, convém acrescentar uma nota no README que aponte para este relatório. Os relatórios históricos não devem ser editados.
-- Nada foi integrado na `main`.
+- **Resolvido:** o README tem a seção "Decisão metodológica sobre a grade espacial", que aponta para este relatório.
+- O `RELATORIO_AVALIACAO_FINAL.md` continua descrevendo o H3 r7 como configuração principal de P1, como deve ser: os relatórios históricos não são editados.
