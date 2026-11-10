@@ -1,0 +1,15 @@
+{
+  "executado": true,
+  "alerta_area_ha": 7.809323515322879,
+  "janela_m": 400,
+  "celulas_r15_na_janela": 164308,
+  "celulas_r15_dentro_do_alerta": 72167,
+  "area_alerta_estimada_por_r15_ha": 6.46119515704187,
+  "pct_celulas_r15_iguais_ao_pai_r10": 84.16206149426687,
+  "aresta_r10_m": 75.863783,
+  "pct_celulas_r15_iguais_ao_pai_r11": 93.06667965041264,
+  "aresta_r11_m": 28.663897000000002,
+  "pct_celulas_r15_iguais_ao_pai_r12": 97.23446210774887,
+  "aresta_r12_m": 10.830188,
+  "celulas_r15_por_pixel_64m": 4574.94356408409
+}

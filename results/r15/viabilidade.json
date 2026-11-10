@@ -1,0 +1,56 @@
+{
+  "area_universo_km2": 151800.0,
+  "limites": {
+    "memoria_gb": 2.0,
+    "celulas_enumeradas_max": 5000000.0,
+    "pontos_amostra_max": 1000000,
+    "tempo_enumeracao_h_max": 1.0
+  },
+  "por_resolucao": {
+    "r7": {
+      "area_media_celula_m2": 5161293.359717191,
+      "aresta_m": 1406.475763,
+      "celulas_universo": 29411.232693101127,
+      "memoria_ids_uint64_gb": 0.000235289861544809,
+      "memoria_ids_e_6_vizinhos_gb": 0.001647029030813663,
+      "celulas_dentro_dos_poligonos_dev": 109.13224805772626,
+      "celulas_por_alerta_mediano": 0.015911913513202675
+    },
+    "r10": {
+      "area_media_celula_m2": 15047.50190766435,
+      "aresta_m": 75.863783,
+      "celulas_universo": 10088053.215177307,
+      "memoria_ids_uint64_gb": 0.08070442572141845,
+      "memoria_ids_e_6_vizinhos_gb": 0.5649309800499291,
+      "celulas_dentro_dos_poligonos_dev": 37432.362573382175,
+      "celulas_por_alerta_mediano": 5.4577865522154765
+    },
+    "r12": {
+      "area_media_celula_m2": 307.091875631606,
+      "aresta_m": 10.830188,
+      "celulas_universo": 494314607.60004777,
+      "memoria_ids_uint64_gb": 3.954516860800382,
+      "memoria_ids_e_6_vizinhos_gb": 27.681618025602678,
+      "celulas_dentro_dos_poligonos_dev": 1834185.766304853,
+      "celulas_por_alerta_mediano": 267.4315410890498
+    },
+    "r15": {
+      "area_media_celula_m2": 0.895311590760579,
+      "aresta_m": 0.584169,
+      "celulas_universo": 169549910407.21802,
+      "memoria_ids_uint64_gb": 1356.3992832577442,
+      "memoria_ids_e_6_vizinhos_gb": 9494.79498280421,
+      "celulas_dentro_dos_poligonos_dev": 629125717.8440548,
+      "celulas_por_alerta_mediano": 91729.01859376136,
+      "tempo_enumeracao_h_estimado": 46.82423033422911
+    }
+  },
+  "taxa_enumeracao_r15_celulas_por_s": 1005829.6099938174,
+  "enumeracao_completa_r15_viavel": false,
+  "decisao": "NÃO enumerar o universo em r15; usar janela pequena (etapa 2) e amostragem (etapa 3)",
+  "precisao_poligonos_deter": {
+    "segmento_m_P5": 11.02926022492517,
+    "segmento_m_mediana": 24.61868712294181,
+    "pixel_sensores_m": "AWFI ~64 m; WFI ~55 m; AWiFS ~56 m"
+  }
+}

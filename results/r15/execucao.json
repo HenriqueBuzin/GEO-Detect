@@ -1,0 +1,16 @@
+{
+  "tempo_total_s": 261.2,
+  "pico_memoria_python_mb": 485.6,
+  "n_pontos_por_origem": 400000,
+  "pontos_por_alvo": 25,
+  "sementes": [
+    0,
+    1
+  ],
+  "limites": {
+    "memoria_gb": 2.0,
+    "celulas_enumeradas_max": 5000000.0,
+    "pontos_amostra_max": 1000000,
+    "tempo_enumeracao_h_max": 1.0
+  }
+}
