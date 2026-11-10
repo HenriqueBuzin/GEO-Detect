@@ -1,0 +1,44 @@
+{
+  "quadrado_5km": {
+    "erro_relativo_area_max": 1.6647845072523055e-12,
+    "erro_relativo_area_medio": 1.442789842396158e-14,
+    "alertas_sem_intersecao": 0,
+    "area_total_alertas_km2": 563.2635,
+    "area_total_intersecoes_km2": 563.2635
+  },
+  "h3_r6": {
+    "erro_relativo_area_max": 2.320548367468108e-12,
+    "erro_relativo_area_medio": 1.477183739837692e-14,
+    "alertas_sem_intersecao": 0,
+    "area_total_alertas_km2": 563.2635,
+    "area_total_intersecoes_km2": 563.2635
+  },
+  "h3_r7": {
+    "erro_relativo_area_max": 8.688864689838324e-12,
+    "erro_relativo_area_medio": 4.089049894993156e-14,
+    "alertas_sem_intersecao": 0,
+    "area_total_alertas_km2": 563.2635,
+    "area_total_intersecoes_km2": 563.2635
+  },
+  "h3_r8": {
+    "erro_relativo_area_max": 4.5361699755473355e-12,
+    "erro_relativo_area_medio": 1.0072430902700103e-13,
+    "alertas_sem_intersecao": 0,
+    "area_total_alertas_km2": 563.2635,
+    "area_total_intersecoes_km2": 563.2635
+  },
+  "quadrado_2.5km": {
+    "erro_relativo_area_max": 1.515523172250074e-12,
+    "erro_relativo_area_medio": 2.862767620399516e-14,
+    "alertas_sem_intersecao": 0,
+    "area_total_alertas_km2": 563.2635,
+    "area_total_intersecoes_km2": 563.2635
+  },
+  "quadrado_1km": {
+    "erro_relativo_area_max": 8.561784802715878e-12,
+    "erro_relativo_area_medio": 7.005066882174297e-14,
+    "alertas_sem_intersecao": 0,
+    "area_total_alertas_km2": 563.2635,
+    "area_total_intersecoes_km2": 563.2635
+  }
+}

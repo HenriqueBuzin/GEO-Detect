@@ -45,6 +45,8 @@ def preparar(g: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     g = g.copy()
     g["geometry"] = [corrigir(x) for x in g.geometry.to_numpy()]
     g = g.to_crs(CRS_METRICO)
+    # a reprojeção pode reintroduzir autointerseções mínimas (12 casos; efeito na área < 1e-7)
+    g["geometry"] = [corrigir(x) for x in g.geometry.to_numpy()]
     g["area_km2"] = g.area / 1e6
     g = g[g["area_km2"] >= SLIVER_KM2].copy()
     c = g.geometry.centroid  # representação pontual inicial (limitação documentada)

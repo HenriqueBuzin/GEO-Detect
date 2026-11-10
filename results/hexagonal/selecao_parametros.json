@@ -1,0 +1,22 @@
+{
+  "criterio": "maior recall_alertas médio, orçamento 2%, origens de ajuste ['2024-01-01', '2024-04-01', '2024-07-01']",
+  "origens_avaliacao": [
+    "2024-10-01",
+    "2025-01-01",
+    "2025-04-01"
+  ],
+  "escolhas": {
+    "h3_r6|C": "C_0.25",
+    "h3_r6|D": "D_0.25_0.5",
+    "h3_r7|C": "C_0.5",
+    "h3_r7|D": "D_0.25_1.0",
+    "h3_r8|C": "C_0.25",
+    "h3_r8|D": "D_0.25_0.5",
+    "quadrado_1km|C": "C_0.25",
+    "quadrado_1km|D": "D_0.25_0.5",
+    "quadrado_2.5km|C": "C_0.5",
+    "quadrado_2.5km|D": "D_0.25_4.0",
+    "quadrado_5km|C": "C_1.0",
+    "quadrado_5km|D": "D_0.5_2.0"
+  }
+}

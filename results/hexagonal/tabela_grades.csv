@@ -1,0 +1,7 @@
+grade,area_celula_media_km2,area_celula_min_km2,area_celula_max_km2,razao_area_vs_quadrado_25km2,papel,vizinhos_imediatos,pentagonos_entre_celulas_usadas,celulas_com_alerta_2016_2023,area_dessas_celulas_km2,celulas_com_alerta_dev,alertas_dev_por_celula_ocupada,pct_alertas_em_mais_de_uma_celula,celulas_por_alerta_media,pct_centroide_na_celula_de_maior_area,tempo_centroides_s,tempo_intersecoes_s,pico_memoria_mb
+quadrado_5km,25.0,25.0,25.0,1.0,referência,8,0,1344,33600.0,410,1.53,18.22,1.197,99.49,0.023,0.216,2.9
+h3_r6,39.835,38.339,43.093,1.593,hexagonal,6,0,1026,40871.1,358,1.76,13.45,1.141,99.68,0.018,1.407,13.1
+h3_r7,5.673,5.478,6.156,0.227,hexagonal,6,0,2505,14210.4,488,1.29,33.91,1.387,99.1,0.018,1.498,13.1
+h3_r8,0.81,0.783,0.879,0.032,hexagonal,6,0,3975,3220.1,575,1.09,76.0,2.161,96.36,0.018,1.948,13.1
+quadrado_2.5km,6.25,6.25,6.25,0.25,controle de resolução,8,0,2406,15037.5,496,1.27,34.91,1.402,98.82,0.021,0.266,2.7
+quadrado_1km,1.0,1.0,1.0,0.04,controle de resolução,8,0,3866,3866.0,567,1.11,70.79,2.059,96.5,0.019,0.35,3.0

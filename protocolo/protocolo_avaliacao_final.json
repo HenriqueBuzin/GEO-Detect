@@ -1,0 +1,74 @@
+{
+  "versao": "1.0",
+  "congelado_em": "2026-11-10",
+  "branch": "feature/hexagonal-h3",
+  "documento": "protocolo/PROTOCOLO_AVALIACAO_FINAL.md",
+  "dados": {
+    "arquivo": "data/raw/deter_amz_mineracao_pa.geojson",
+    "sha256": "b4b4224a71c78bfc6741da22f6c3c89eb7d34795a7f0856cafbbb5dc7cc8e4d1",
+    "deter_updated_date": "2026-10-30",
+    "politica": "usar exatamente este arquivo; não rebaixar antes da avaliação final"
+  },
+  "grades": {
+    "principal": "h3_r7",
+    "controle_geometrico": "quadrado_2.5km",
+    "referencia_original": "quadrado_5km"
+  },
+  "modelos": {
+    "h3_r7_C": {"grade": "h3_r7", "w": 0.5, "papel": "principal (GEO-Detect: H3 r7 + vizinhança)"},
+    "quadrado_2.5km_C": {"grade": "quadrado_2.5km", "w": 0.5, "papel": "controle geométrico obrigatório"},
+    "h3_r7_A": {"grade": "h3_r7", "w": null, "papel": "frequência histórica sem vizinhança (mesma grade)"},
+    "quadrado_2.5km_A": {"grade": "quadrado_2.5km", "w": null, "papel": "frequência histórica sem vizinhança (mesma grade)"},
+    "quadrado_5km_A": {"grade": "quadrado_5km", "w": null, "papel": "referência original congelada no script 03 (A_24m)"}
+  },
+  "pontuacao": {
+    "A": "nº de alertas com centroide na célula e view_date em [corte − 24 meses, corte)",
+    "C": "A + w · média de A nos vizinhos imediatos (6 no H3 r7; 8, vizinhança de Moore, no quadrado); vizinhos sem alerta valem 0",
+    "implementacao": "geodetect/modelos.py (pontuacoes, prob_selecao, k_orcamento)",
+    "origem_de_w": "results/hexagonal/selecao_parametros.json — w = 0,5 escolhido nas origens de desenvolvimento 2024-01, 2024-04 e 2024-07, nas duas grades"
+  },
+  "desempate": "expectativa sob desempate aleatório: células empatadas no limiar recebem probabilidade de seleção vagas / n_empatadas",
+  "protocolo_temporal": {
+    "gap_meses": 1,
+    "horizonte_meses": 3,
+    "informacao": "somente alertas com view_date < origem − 1 mês",
+    "alvo": "alertas com view_date em [origem, origem + 3 meses)"
+  },
+  "universo": {
+    "regra": "quadrados de 5 km a até 2 células (Chebyshev, 10 km) de algum quadrado com alerta disponível na origem; em cada grade, as células cujo CENTRO cai nesses quadrados (no quadrado de 2,5 km, as 4 subcélulas de cada quadrado de 5 km)",
+    "area_referencia": "25 km² × nº de quadrados de 5 km do universo"
+  },
+  "orcamentos": [0.01, 0.02, 0.05],
+  "orcamento_primario": 0.02,
+  "regra_k": "k = max(1, round(fração · área de referência / área média das células da grade no universo))",
+  "metrica_primaria": {
+    "nome": "Recall@B",
+    "definicao": "fração de TODOS os alertas-alvo (centroide) que caem nas células selecionadas; mesmo denominador para todas as grades",
+    "justificativa": "o recall por células não é comparável entre grades com células de tamanhos diferentes"
+  },
+  "metricas_secundarias": ["recall_area (interseção)", "recall_celulas (dentro da grade)", "precision_celulas (dentro da grade)", "jaccard entre origens consecutivas", "área selecionada / orçamento", "área do universo / área de referência"],
+  "origens": {
+    "teste_independente": ["2026-01-01", "2026-04-01", "2026-07-01"],
+    "teste_semi_independente": ["2025-07-01", "2025-10-01"],
+    "justificativa": "alvos de jul–dez/2025 foram vistos na auditoria (contagens mensais, mapa e cobertura usada para escolher o raio de 10 km do universo). Alvos de jan–set/2026 só foram vistos como total anual agregado (556 alertas em 2026)."
+  },
+  "comparacoes": [
+    {"id": "P1", "primaria": true, "a": "h3_r7_C", "b": "quadrado_2.5km_C", "pergunta": "efeito da forma (hexágono × quadrado de área parecida), com vizinhança"},
+    {"id": "S1", "primaria": false, "a": "h3_r7_C", "b": "h3_r7_A", "pergunta": "ganho da informação espacial no H3 r7"},
+    {"id": "S2", "primaria": false, "a": "quadrado_2.5km_C", "b": "quadrado_2.5km_A", "pergunta": "ganho da informação espacial no quadrado de 2,5 km"},
+    {"id": "S3", "primaria": false, "a": "h3_r7_C", "b": "quadrado_5km_A", "pergunta": "configuração principal × referência original"},
+    {"id": "S4", "primaria": false, "a": "quadrado_2.5km_C", "b": "quadrado_5km_A", "pergunta": "controle × referência original"}
+  ],
+  "estatistica": {
+    "estimativa": "recall agregado do grupo de origens = alertas capturados (esperados) / alertas-alvo, somando as origens",
+    "incerteza": "bootstrap espacial em blocos: blocos = (origem, quadrado de 5 km do centroide do alerta-alvo), reamostrados com reposição dentro de cada origem; 2000 réplicas; semente 2027; IC 95% percentil da diferença pareada",
+    "regra_de_decisao": "superior se o IC 95% da diferença estiver todo acima de 0; inferior se estiver todo abaixo de 0; caso contrário, inconclusivo. A conclusão principal usa SOMENTE as origens independentes e o orçamento de 2%.",
+    "multiplicidade": "apenas P1 é confirmatória; S1–S4, os orçamentos de 1% e 5% e as origens semi-independentes são descritivos"
+  },
+  "proibicoes": [
+    "alterar w, janelas, raio do universo, grades, orçamentos ou métrica depois de ver o teste",
+    "acrescentar ou remover modelos ou origens depois de ver o teste",
+    "rodar a avaliação final mais de uma vez para escolher um resultado (o script recusa sobrescrever a saída)",
+    "rebaixar os dados antes da avaliação"
+  ]
+}

@@ -19,6 +19,10 @@ pip install -r requirements.txt
 python scripts/01_download_deter.py   # baixa os alertas do WFS do TerraBrasilis + limite do PA (IBGE)
 python scripts/02_audit_deter.py      # gera results/audit/
 python scripts/03_baselines_dev.py    # grade, universo, variáveis e métodos A/B (só desenvolvimento)
+python scripts/04_hexagonal_grid.py   # atribuição às grades quadradas e H3 (centroide e interseção)
+python scripts/05_compare_grids.py    # comparação entre grades com orçamento igual em km² (só desenvolvimento)
+python scripts/06_temporal_neighbors.py  # estatísticas descritivas de vizinhança temporal
+python -m pytest tests                # testes de geometria, adjacência, datas e vazamento temporal
 ```
 
 Os dados brutos não são versionados. `data/raw/download_metadata.json` registra o filtro, a data de
@@ -173,25 +177,73 @@ Esses dois métodos são a régua para C (ST-DBSCAN) e D (GEO-Detect).
 
 ---
 
+## Experimento: grades hexagonais H3 (branch `feature/hexagonal-h3`, preliminar)
+
+Relatório completo em [`results/hexagonal/RELATORIO.md`](results/hexagonal/RELATORIO.md).
+Comparação feita **só no desenvolvimento**, com o mesmo orçamento em km². Quadrados de 2,5 km e 1 km
+entram como **controles de resolução**, para separar o efeito da forma do efeito do tamanho da célula.
+
+Recall de alertas futuros com 2% da área (média de 6 origens):
+
+| Grade | Contagem própria (A) | + vizinhos (C*) |
+|---|---|---|
+| quadrado 5 km (referência atual) | 0,210 | 0,216 |
+| quadrado 2,5 km | 0,236 | 0,245 |
+| **H3 r7 (5,7 km²)** | **0,275** | **0,311** |
+| quadrado 1 km | 0,168 | 0,283 |
+| H3 r8 (0,8 km²) | 0,118 | 0,298 |
+
+- **Resolução e vizinhança explicam a maior parte do ganho.** Isso vale nas duas formas de célula.
+- **O hexágono supera o quadrado de área parecida só em cerca de 6 km²:** +0,04 a +0,07, em 5 ou 6 das 6 origens. Em cerca de 1 km² não há diferença. Com 6 origens, nada disso é estatisticamente estabelecido.
+- **Novas detecções aparecem ao lado de células ativas** com frequência 3 a 19 vezes a esperada. Ainda assim, de 77% a 92% delas não tinham vizinho ativo no trimestre anterior.
+- **Recomendação:** usar células de cerca de 6 km² com vizinhança. Congelar H3 r7 e o quadrado de 2,5 km como comparação principal antes de abrir o teste. Tratar a forma da célula como pergunta secundária.
+
+---
+
+## Avaliação final pré-registrada (teste)
+
+Protocolo: [`protocolo/PROTOCOLO_AVALIACAO_FINAL.md`](protocolo/PROTOCOLO_AVALIACAO_FINAL.md), congelado no commit `41c29b4`
+antes de qualquer leitura dos alvos. Execução única. Relatório: [`results/avaliacao_final/RELATORIO_AVALIACAO_FINAL.md`](results/avaliacao_final/RELATORIO_AVALIACAO_FINAL.md).
+
+Recall@2% (alertas futuros capturados) nas 3 origens independentes, 2026-01 a 2026-07, com 528 alertas:
+
+| Modelo | Recall@2% |
+|---|---|
+| H3 r7 + vizinhança (principal) | 0,225 |
+| quadrado 2,5 km + vizinhança (controle) | 0,227 |
+| quadrado 5 km, frequência histórica (referência original) | 0,155 |
+
+- **P1, hexágono contra quadrado de área parecida:** −0,002, IC 95% [−0,043; +0,035]. **Inconclusivo:** a forma não fez diferença.
+- **Resolução de cerca de 6 km² contra 5 km:** +0,07, IC [+0,036; +0,11], em 3 de 3 origens. É o **ganho confirmado** (+45% relativos), igual nas duas formas.
+- **Vizinhança imediata:** nula com 2% e grande com 5% (+0,08 a +0,10). Este último resultado é descritivo.
+
+---
+
 ## Estrutura
 
 ```
 geodetect/dados.py             carga, correção de geometrias, projeção e célula de 5 km (compartilhado)
+geodetect/grades.py            grades quadradas e H3: centroide, interseção, vizinhos, áreas, região comum
+geodetect/avaliacao.py         origens, gap, universo, ganho esperado com empates, estabilidade
 scripts/01_download_deter.py   download reproduzível (WFS + IBGE) com metadados e SHA-256
 scripts/02_audit_deter.py      auditoria: campos, qualidade, séries, geografia, universo, vizinhança
 scripts/03_baselines_dev.py    grade, universo por origem, variáveis e métodos A/B no desenvolvimento
+scripts/04_hexagonal_grid.py   atribuição dos alertas a 6 grades, validação de área, mapas, custo
+scripts/05_compare_grids.py    modelos A/B/C/D em 6 grades com orçamento igual em km²
+scripts/06_temporal_neighbors.py  probabilidades de transição e novas detecções junto a vizinhos ativos
+tests/                         27 testes (dados sintéticos): área, adjacência, datas, vazamento temporal
 results/audit/                 tabelas, figuras e relatório JSON da auditoria
 results/baselines_dev/         métricas por origem, resumo, parâmetros congelados e figuras
+results/hexagonal/             comparação entre grades, vizinhança temporal e RELATORIO.md
 data/raw/                      dados brutos (não versionados, exceto os metadados)
-data/processed/                variáveis por origem (não versionadas, regeneradas pelo script 03)
+data/processed/                variáveis e atribuições (não versionadas, regeneradas pelos scripts 03 e 04)
 ```
 
 ## Próximos passos
 
-1. Grafo espaçotemporal (D): limiares de 1, 2, 3 e 5 km × 30, 60 e 90 dias, com pontuação por célula incluindo a vizinhança. Ajuste só no desenvolvimento.
-2. ST-DBSCAN (C), com uma regra fixa para converter agrupamentos em pontuação por célula.
-3. Comparar C e D com A_24m e B_12m no desenvolvimento, inclusive no subgrupo de células-alvo sem histórico.
-4. Congelar tudo e abrir o teste (origens 2025-07 a 2026-07) uma única vez.
+1. Decidir se a branch `feature/hexagonal-h3` entra na `main`, e com qual grade de cerca de 6 km² (H3 r7 ou quadrado de 2,5 km, equivalentes no teste).
+2. Grafo espaçotemporal e ST-DBSCAN, desenvolvidos só nas origens até 2026-07. O teste independente de 2026 **já foi usado**: um modelo novo precisa de alvos a partir de out/2026, ou deve ser apresentado como exploratório.
+3. Resumo e pôster para a GEOMRIT 2027 com o ganho confirmado de resolução e o resultado nulo da forma.
 
 ## Licença
 
