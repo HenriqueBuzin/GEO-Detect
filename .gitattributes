@@ -1,2 +1,8 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Preserve generated artifacts byte for byte.
+*.pdf binary
+*.png binary
+*.zip binary
+*.md whitespace=-blank-at-eol

@@ -1,0 +1,3 @@
+modelo,precisao_media,alertas,celulas_positivas
+geo_detect,0.01314459,629,572
+random_forest_adaptada,0.01287746,629,572

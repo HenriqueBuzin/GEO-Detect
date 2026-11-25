@@ -1,0 +1,28 @@
+{
+  "torch": "2.15.0",
+  "fontes_e_treino": {
+    "deter_sha256": "b4b4224a71c78bfc6741da22f6c3c89eb7d34795a7f0856cafbbb5dc7cc8e4d1",
+    "arquivos_sha256": {
+      "data/raw/hydrorivers_v10_sa.zip": "38bfdcdfcc0698b1b37c1700434bcd65e792244d704153f055969f356d5cc7d5",
+      "data/raw/ibge_localidades_2010/BR_Localidades_2010_v1.shp": "fa42e4ad8dced21793745f13e06876741bed375950d37496dd828b7352845c69",
+      "data/raw/ibge_localidades_2010/BR_Localidades_2010_v1.shx": "8cd83e8ed68b4c0da8ac8f30359f5fe79b9f0db626ab3b66e208b294cac17f7b",
+      "data/raw/ibge_localidades_2010/BR_Localidades_2010_v1.prj": "86dc6c13b67971872d756846278f121514904e8ef30d569115f3b9df6c1106fd",
+      "data/raw/ibge_localidades_2010/BR_Localidades_2010_v1.dbf": "7cca577e6a4eaeb94dd9f25a5c6dcdfd9371a4d737f54051d0afccb52cb20cd0"
+    },
+    "torch": "2.15.0",
+    "semente": 2027,
+    "meses": 24,
+    "epocas": 12,
+    "negativos_por_positivo": 10,
+    "lote": 256,
+    "lr": 0.002
+  },
+  "ann_mayfield": {
+    "camada_oculta": 60,
+    "ativacao": "sigmoid",
+    "doi": "10.1016/j.envsoft.2020.104741"
+  },
+  "lstm_kanoga": {
+    "doi": "10.1109/IGARSS53475.2024.10642628"
+  }
+}

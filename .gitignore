@@ -1,14 +1,13 @@
-# Python
 __pycache__/
 *.py[cod]
 .venv/
-venv/
-.ipynb_checkpoints/
-
-# Dados brutos (reproduzíveis com scripts/01_download_deter.py; conferir SHA-256 em download_metadata.json)
+.pytest_cache/
+.DS_Store
+tmp/
 data/raw/*
 !data/raw/download_metadata.json
+!data/raw/deter_amz_mineracao_pa.geojson
 data/processed/
-
-# Sistema
-.DS_Store
+*.aux
+*.log
+*.synctex.gz

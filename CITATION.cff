@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "Se usar este código, cite o projeto GEO-Detect."
+title: "GEO-Detect: uma rede neural para previsão espacial de alertas de mineração na Amazônia"
+type: software
+authors:
+  - given-names: Henrique
+    family-names: Buzin
+    affiliation: Universidade Federal de Santa Catarina
+repository-code: "https://github.com/HenriqueBuzin/GEO-Detect"
+license: Unlicense
